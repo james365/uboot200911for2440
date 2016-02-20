@@ -295,7 +295,7 @@ __LIBS := $(subst $(obj),,$(LIBS)) $(subst $(obj),,$(LIBBOARD))
 #########################################################################
 
 # Always append ALL so that arch config.mk's can add custom ones
-ALL += $(obj)u-boot.srec $(obj)u-boot.bin $(obj)System.map $(U_BOOT_NAND) $(U_BOOT_ONENAND)
+ALL += $(obj)u-boot.srec $(obj)u-boot.bin $(obj)System.map $(U_BOOT_NAND) $(U_BOOT_ONENAND) $(obj)u-boot.dis install_uboot 
 
 all:		$(ALL)
 
@@ -334,6 +334,11 @@ $(obj)u-boot.sha1:	$(obj)u-boot.bin
 
 $(obj)u-boot.dis:	$(obj)u-boot
 		$(OBJDUMP) -d $< > $@
+
+install_uboot: $(obj)u-boot.bin
+	if [ -d /tftpboot ] ; then \
+		cp $(obj)u-boot.bin /tftpboot/ ;\
+	fi
 
 GEN_UBOOT = \
 		UNDEF_SYM=`$(OBJDUMP) -x $(LIBBOARD) $(LIBS) | \
@@ -439,13 +444,13 @@ TAG_SUBDIRS += drivers/video
 
 tags ctags:
 		ctags -w -o $(obj)ctags `find $(SUBDIRS) $(TAG_SUBDIRS) \
-						-name '*.[ch]' -print`
+						-name '*.[chS]' -print`
 
 etags:
 		etags -a -o $(obj)etags `find $(SUBDIRS) $(TAG_SUBDIRS) \
 						-name '*.[ch]' -print`
 cscope:
-		find $(SUBDIRS) $(TAG_SUBDIRS) -name '*.[ch]' -print \
+		find $(SUBDIRS) $(TAG_SUBDIRS) -name '*.[chS]' -print \
 						> cscope.files
 		cscope -b -q -k
 

@@ -114,8 +114,10 @@ start_code:
 	orr	r0, r0, #0xd3
 	msr	cpsr, r0
 
+/*
 	bl	coloured_LED_init
 	bl	red_LED_on
+*/
 
 #if	defined(CONFIG_AT91RM9200DK) || defined(CONFIG_AT91RM9200EK)
 	/*
@@ -131,7 +133,7 @@ copyex:
 	bne	copyex
 #endif
 
-#if defined(CONFIG_S3C2400) || defined(CONFIG_S3C2410)
+#if defined(CONFIG_S3C2400) || defined(CONFIG_S3C2410) || defined(CONFIG_S3C2440)
 	/* turn off the watchdog */
 
 # if defined(CONFIG_S3C2400)
@@ -159,22 +161,49 @@ copyex:
 	ldr	r1, =0x3ff
 	ldr	r0, =INTSUBMSK
 	str	r1, [r0]
+# else if defined(CONFIG_S3C2440)
+	ldr	r1, =0x7fff
+	ldr	r0, =INTSUBMSK
+	str	r1, [r0]
 # endif
 
+#if defined(CONFIG_S3C2400) || defined(CONFIG_S3C2410)
 	/* FCLK:HCLK:PCLK = 1:2:4 */
 	/* default FCLK is 120 MHz ! */
 	ldr	r0, =CLKDIVN
 	mov	r1, #3
 	str	r1, [r0]
-#endif	/* CONFIG_S3C2400 || CONFIG_S3C2410 */
+#else if defined(CONFIG_S3C2440)
+    /* FCLK:HCLK:PCLK = 1:4:8 */
+#  define CLK_CTL_BASE 0x4C000000
+#  define MDIV_405      0x7f << 12
+#  define PSDIV_405     0x21
+#  define MDIV MDIV_405
+#  define PSDIV PSDIV_405 
+#  define CLKDIV    0x5 
+
+    ldr r0, =CLKDIVN
+    mov r1,#CLKDIV
+    str r1, [r0]
+
+    mrc p15, 0, r1, c1, c0, 0
+    orr r1, r1, #0xc0000000
+    mcr p15, 0, r1, c1, c0, 0
+
+    mov r1, #CLK_CTL_BASE
+    mov r2, #MDIV
+    add r2, r2, #PSDIV
+    str r2, [r1, #0x04]
+
+#endif
+
+#endif	/* CONFIG_S3C2400 || CONFIG_S3C2410 || CONFIG_S3C2440 */
 
 	/*
 	 * we do sys-critical inits only at reboot,
 	 * not when booting from ram!
 	 */
-#ifndef CONFIG_SKIP_LOWLEVEL_INIT
 	bl	cpu_init_crit
-#endif
 
 #ifndef CONFIG_SKIP_RELOCATE_UBOOT
 relocate:				/* relocate U-Boot to RAM	    */
@@ -232,7 +261,6 @@ _start_armboot:	.word start_armboot
  */
 
 
-#ifndef CONFIG_SKIP_LOWLEVEL_INIT
 cpu_init_crit:
 	/*
 	 * flush v4 I/D caches
@@ -258,11 +286,12 @@ cpu_init_crit:
 	 */
 	mov	ip, lr
 
+#ifndef CONFIG_SKIP_LOWLEVEL_INIT
 	bl	lowlevel_init
+#endif /* CONFIG_SKIP_LOWLEVEL_INIT */
 
 	mov	lr, ip
 	mov	pc, lr
-#endif /* CONFIG_SKIP_LOWLEVEL_INIT */
 
 /*
  *************************************************************************

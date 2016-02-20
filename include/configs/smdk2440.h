@@ -29,13 +29,15 @@
 #ifndef __CONFIG_H
 #define __CONFIG_H
 
+#define  CONFIG_SKIP_LOWLEVEL_INIT 1
+
 /*
  * High Level Configuration Options
  * (easy to change)
  */
 #define CONFIG_ARM920T		1	/* This is an ARM920T Core	*/
-#define	CONFIG_S3C2410		1	/* in a SAMSUNG S3C2410 SoC     */
-#define CONFIG_SMDK2410		1	/* on a SAMSUNG SMDK2410 Board  */
+#define	CONFIG_S3C2440		1	/* in a SAMSUNG S3C2410 SoC     */
+#define CONFIG_SMDK2440		1	/* on a SAMSUNG SMDK2440 Board  */
 
 /* input clock of PLL */
 #define CONFIG_SYS_CLK_FREQ	12000000/* the SMDK2410 has 12MHz input clock */
