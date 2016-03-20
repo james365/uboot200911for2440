@@ -156,6 +156,7 @@ extern flash_info_t *flash_get_info(ulong base);
 
 /* Manufacturers inside bank 0 have ids like 0x00xx00xx */
 #define AMD_MANUFACT	0x00010001	/* AMD	   manuf. ID in D23..D16, D7..D0 */
+#define SPANSION_MANUFACT	0x00010001	/* SPANSION	   manuf. ID in D23..D16, D7..D0 */
 #define FUJ_MANUFACT	0x00040004	/* FUJITSU manuf. ID in D23..D16, D7..D0 */
 #define ATM_MANUFACT	0x001F001F	/* ATMEL */
 #define STM_MANUFACT	0x00200020	/* STM (Thomson) manuf. ID in D23.. -"- */
@@ -208,9 +209,8 @@ extern flash_info_t *flash_get_info(ulong base);
 
 #define AMD_ID_PL160CB	0x22452245	/* 29PL160CB ID (16 M, bottom boot sect */
 
-#define AMD_ID_LV400T	0x22B922B9	/* 29LV400T ID ( 4 M, top boot sector)	*/
-#define AMD_ID_LV400B	0x22BA22BA	/* 29LV400B ID ( 4 M, bottom boot sect) */
-
+#define AMD_ID_LV400T	0x22B922B9	/* 29LV400T ID ( 4 M, top boot sector)	*/ 
+#define AMD_ID_LV400B	0x22BA22BA	/* 29LV400B ID ( 4 M, bottom boot sect) */ 
 #define AMD_ID_LV033C	0xA3		/* 29LV033C ID ( 4 M x 8)		*/
 #define AMD_ID_LV065D	0x93		/* 29LV065D ID ( 8 M x 8)		*/
 
@@ -219,6 +219,9 @@ extern flash_info_t *flash_get_info(ulong base);
 
 #define AMD_ID_LV160T	0x22C422C4	/* 29LV160T ID (16 M, top boot sector)	*/
 #define AMD_ID_LV160B	0x22492249	/* 29LV160B ID (16 M, bottom boot sect) */
+
+#define SPANSION_ID_70TFI010	0x22C422C4	/* 70TFI010 ID (16 M, top boot sector)	*/
+#define SPANSION_ID_70TFI020	0x22492249	/* 70TFI020 ID (16 M, bottom boot sect) */
 
 #define AMD_ID_DL163T	0x22282228	/* 29DL163T ID (16 M, top boot sector)	*/
 #define AMD_ID_DL163B	0x222B222B	/* 29DL163B ID (16 M, bottom boot sect) */

@@ -28,7 +28,7 @@ ulong myflush (void);
 
 
 #define FLASH_BANK_SIZE	PHYS_FLASH_SIZE
-#define MAIN_SECT_SIZE  0x10000	/* 64 KB */
+#define MAIN_SECT_SIZE  0x8000	
 
 flash_info_t flash_info[CONFIG_SYS_MAX_FLASH_BANKS];
 
@@ -71,6 +71,9 @@ ulong flash_init (void)
 #elif defined(CONFIG_AMD_LV800)
 			(AMD_MANUFACT & FLASH_VENDMASK) |
 			(AMD_ID_LV800B & FLASH_TYPEMASK);
+#elif defined(CONFIG_SPANSION_70TFI020)
+            (SPANSION_MANUFACT & FLASH_VENDMASK) |
+            (SPANSION_ID_70TFI020 & FLASH_TYPEMASK);
 #else
 #error "Unknown flash configured"
 #endif
@@ -92,15 +95,15 @@ ulong flash_init (void)
 				/* 2nd and 3rd are both 8 KB */
 				if ((j == 1) || (j == 2)) {
 					flash_info[i].start[j] =
-						flashbase + 0x4000 + (j -
+						flashbase + 0x2000 + (j -
 								      1) *
-						0x2000;
+						0x1000;
 				}
 
 				/* 4th 32 KB */
 				if (j == 3) {
 					flash_info[i].start[j] =
-						flashbase + 0x8000;
+						flashbase + 0x4000;
 				}
 			} else {
 				flash_info[i].start[j] =
@@ -130,7 +133,7 @@ void flash_print_info (flash_info_t * info)
 
 	switch (info->flash_id & FLASH_VENDMASK) {
 	case (AMD_MANUFACT & FLASH_VENDMASK):
-		printf ("AMD: ");
+		printf ("AMD/SPANSION: ");
 		break;
 	default:
 		printf ("Unknown Vendor ");
@@ -144,6 +147,9 @@ void flash_print_info (flash_info_t * info)
 	case (AMD_ID_LV800B & FLASH_TYPEMASK):
 		printf ("1x Amd29LV800BB (8Mbit)\n");
 		break;
+    case (SPANSION_ID_70TFI020 & FLASH_TYPEMASK):
+        printf ("S29AL016D  (16Mbit)\n");
+        break;
 	default:
 		printf ("Unknown Chip Type\n");
 		goto Done;
@@ -186,7 +192,10 @@ int flash_erase (flash_info_t * info, int s_first, int s_last)
 	}
 
 	if ((info->flash_id & FLASH_VENDMASK) !=
-	    (AMD_MANUFACT & FLASH_VENDMASK)) {
+	    (AMD_MANUFACT & FLASH_VENDMASK)
+        || (info->flash_id & FLASH_VENDMASK) !=
+        (SPANSION_MANUFACT & FLASH_VENDMASK)
+        ) {
 		return ERR_UNKNOWN_FLASH_VENDOR;
 	}
 
@@ -248,7 +257,18 @@ int flash_erase (flash_info_t * info, int s_first, int s_last)
 
 				if (!chip
 				    && (result & 0xFFFF) & BIT_PROGRAM_ERROR)
-					chip = ERR;
+                {
+                    result = *addr;
+                    if(!chip 
+                        && (result & 0xFFFF)& BIT_ERASE_DONE)
+                    {
+                        chip = READY;
+                    }
+                    else
+                    {
+					    chip = ERR;
+                    }
+                }
 
 			} while (!chip);
 

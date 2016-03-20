@@ -81,13 +81,13 @@ int board_init (void)
 	/* to reduce PLL lock time, adjust the LOCKTIME register */
 	clk_power->LOCKTIME = 0xFFFFFF;
 
-	/* configure MPLL */
+	/* configure MPLL FCLK:HCLK:PCLK=1:4:8 */
 	clk_power->MPLLCON = ((M_MDIV << 12) + (M_PDIV << 4) + M_SDIV);
 
 	/* some delay between MPLL and UPLL */
 	delay (4000);
 
-	/* configure UPLL */
+	/* configure UPLL 43Mhz */
 	clk_power->UPLLCON = ((U_M_MDIV << 12) + (U_M_PDIV << 4) + U_M_SDIV);
 
 	/* some delay between MPLL and UPLL */
@@ -110,7 +110,7 @@ int board_init (void)
 	gpio->GPHCON = 0x002AFAAA;
 	gpio->GPHUP = 0x000007FF;
 
-	/* arch number of SMDK2410-Board */
+	/* arch number of SMDK2440-Board */
 	gd->bd->bi_arch_number = MACH_TYPE_SMDK2410;
 
 	/* adress of boot parameters */

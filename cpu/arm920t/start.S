@@ -181,20 +181,23 @@ copyex:
 #  define MDIV MDIV_405
 #  define PSDIV PSDIV_405 
 #  define CLKDIV    0x5 
-
+    
+    /* DEVIDER CLOCK: FCLK:HCLK:PCLK = 1:4:8 */
     ldr r0, =CLKDIVN
     mov r1,#CLKDIV
     str r1, [r0]
-
+    
+    /* if HDIVN != 0 then must CPU bus mode to Asynchronous bus mode */
     mrc p15, 0, r1, c1, c0, 0
     orr r1, r1, #0xc0000000
     mcr p15, 0, r1, c1, c0, 0
-
+    
+    /* set FCLK = 405 MHZ */ 
     mov r1, #CLK_CTL_BASE
     mov r2, #MDIV
     add r2, r2, #PSDIV
     str r2, [r1, #0x04]
-
+    
 #endif
 
 #endif	/* CONFIG_S3C2400 || CONFIG_S3C2410 || CONFIG_S3C2440 */
