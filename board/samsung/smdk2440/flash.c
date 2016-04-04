@@ -28,7 +28,7 @@ ulong myflush (void);
 
 
 #define FLASH_BANK_SIZE	PHYS_FLASH_SIZE
-#define MAIN_SECT_SIZE  0x8000	
+#define MAIN_SECT_SIZE  0x10000
 
 flash_info_t flash_info[CONFIG_SYS_MAX_FLASH_BANKS];
 
@@ -95,15 +95,13 @@ ulong flash_init (void)
 				/* 2nd and 3rd are both 8 KB */
 				if ((j == 1) || (j == 2)) {
 					flash_info[i].start[j] =
-						flashbase + 0x2000 + (j -
-								      1) *
-						0x1000;
+						flashbase + 0x4000 + (j -1) *0x2000;
 				}
 
 				/* 4th 32 KB */
 				if (j == 3) {
 					flash_info[i].start[j] =
-						flashbase + 0x4000;
+						flashbase + 0x8000;
 				}
 			} else {
 				flash_info[i].start[j] =
@@ -245,8 +243,9 @@ int flash_erase (flash_info_t * info, int s_first, int s_last)
 
 				/* check timeout */
 				if (get_timer_masked () >
-				    CONFIG_SYS_FLASH_ERASE_TOUT) {
-					MEM_FLASH_ADDR1 = CMD_READ_ARRAY;
+				    CONFIG_SYS_FLASH_ERASE_TOUT) 
+                {
+                    MEM_FLASH_ADDR1 = CMD_READ_ARRAY;
 					chip = TMO;
 					break;
 				}
@@ -323,8 +322,10 @@ static int write_hword (flash_info_t * info, ulong dest, ushort data)
 	 */
 	result = *addr;
 	if ((result & data) != data)
+    {
+        printf("addr:%p\n", addr);
 		return ERR_NOT_ERASED;
-
+    }
 
 	/*
 	 * Disable interrupts which might cause a timeout
