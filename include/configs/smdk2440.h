@@ -198,4 +198,7 @@
 #define	CONFIG_ENV_IS_IN_FLASH	1
 #define CONFIG_ENV_SIZE		0x10000	/* Total Size of Environment Sector 64kb */
 
+#define CONFIG_CMDLINE_EDITING
+#define CONFIG_AUTO_COMPLETE
+
 #endif	/* __CONFIG_H */
