@@ -109,7 +109,7 @@
 #define CONFIG_CMD_PING
 
 #define CONFIG_BOOTDELAY	3
-/*#define CONFIG_BOOTARGS	"root=ramfs devfs=mount console=ttySA0,9600" */
+#define CONFIG_BOOTARGS	"root=/dev/nfs nfsroot=192.168.1.230:/nfs/rootfs ip=192.168.1.250 console=ttySAC0,115200"
 #define CONFIG_ETHADDR	08:00:3e:26:0a:5b 
 #define CONFIG_NETMASK          255.255.255.0
 #define CONFIG_IPADDR		192.168.1.250
@@ -188,7 +188,7 @@
 #ifdef CONFIG_SPANSION_70TFI020
 #define PHYS_FLASH_SIZE		0x00200000 /* 2MB */
 #define CONFIG_SYS_MAX_FLASH_SECT	(35)	/* max number of sectors on one chip */
-#define CONFIG_ENV_ADDR		(CONFIG_SYS_FLASH_BASE + 0x0E0000) /* addr of environment */
+#define CONFIG_ENV_ADDR		(CONFIG_SYS_FLASH_BASE + 0x100000) /* addr of environment */
 #endif
 
 /* timeout values are in ticks */
@@ -200,5 +200,13 @@
 
 #define CONFIG_CMDLINE_EDITING
 #define CONFIG_AUTO_COMPLETE
+
+/* NAND FLASH 配置 */
+#define CONFIG_CMD_NAND	1
+
+#define CONFIG_SYS_MAX_NAND_DEVICE	1
+#define CONFIG_SYS_NAND_BASE		0x4E000000 
+#define CONFIG_NAND_S3C2440 
+
 
 #endif	/* __CONFIG_H */

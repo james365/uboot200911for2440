@@ -2576,16 +2576,16 @@ static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
 		/* The 4th id byte is the important one */
 		extid = chip->read_byte(mtd);
 		/* Calc pagesize */
-		mtd->writesize = 1024 << (extid & 0x3);
+		mtd->writesize = 1024 << (extid & 0x3); // 2kbytes
 		extid >>= 2;
 		/* Calc oobsize */
-		mtd->oobsize = (8 << (extid & 0x01)) * (mtd->writesize >> 9);
+		mtd->oobsize = (8 << (extid & 0x01)) * (mtd->writesize >> 9); // 64 bytes
 		extid >>= 2;
 		/* Calc blocksize. Blocksize is multiples of 64KiB */
-		mtd->erasesize = (64 * 1024) << (extid & 0x03);
+		mtd->erasesize = (64 * 1024) << (extid & 0x03); // 128kbytes
 		extid >>= 2;
 		/* Get buswidth information */
-		busw = (extid & 0x01) ? NAND_BUSWIDTH_16 : 0;
+		busw = (extid & 0x01) ? NAND_BUSWIDTH_16 : 0; // 0
 
 	} else {
 		/*
@@ -2618,7 +2618,7 @@ static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
 	}
 
 	/* Calculate the address shift from the page size */
-	chip->page_shift = ffs(mtd->writesize) - 1;
+	chip->page_shift = ffs(mtd->writesize) - 1; // 11 
 	/* Convert chipsize to number of pages per chip -1. */
 	chip->pagemask = (chip->chipsize >> chip->page_shift) - 1;
 

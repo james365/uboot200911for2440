@@ -70,6 +70,7 @@ static inline void delay (unsigned long loops)
 
 /*
  * Miscellaneous platform dependent initialisations
+ * 平台相关的初始  
  */
 
 int board_init (void)
@@ -110,10 +111,14 @@ int board_init (void)
 	gpio->GPHCON = 0x002AFAAA;
 	gpio->GPHUP = 0x000007FF;
 
-	/* arch number of SMDK2440-Board */
+	/* arch number of SMDK2440-Board 
+     * 设置机器码 
+     * */
 	gd->bd->bi_arch_number = MACH_TYPE_SMDK2410;
 
-	/* adress of boot parameters */
+	/* adress of boot parameters 
+     * 启动参数地址
+     * */
 	gd->bd->bi_boot_params = 0x30000100;
 
 	icache_enable();

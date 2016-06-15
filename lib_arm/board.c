@@ -283,7 +283,7 @@ void start_armboot (void)
 	memset (gd->bd, 0, sizeof (bd_t));
 
 	gd->flags |= GD_FLG_RELOC;
-
+    /* 监控的长度为代码段长度 */
 	monitor_flash_len = _bss_start - _armboot_start;
 
 	for (init_fnc_ptr = init_sequence; *init_fnc_ptr; ++init_fnc_ptr) {
@@ -297,7 +297,9 @@ void start_armboot (void)
 			CONFIG_SYS_MALLOC_LEN);
 
 #ifndef CONFIG_SYS_NO_FLASH
-	/* configure available FLASH banks */
+	/* configure available FLASH banks 
+     * 初始化 NOR flash ，打印信息 
+     * */
 	display_flash_config (flash_init ());
 #endif /* CONFIG_SYS_NO_FLASH */
 

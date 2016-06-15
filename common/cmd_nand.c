@@ -133,7 +133,9 @@ arg_off_size(int argc, char *argv[], nand_info_t *nand, ulong *off, size_t *size
 		}
 	}
 #endif
-
+    /*
+     * argv[0] = off , argv[1] = size 
+     * */
 	if (argc >= 1) {
 		if (!(str2long(argv[0], off))) {
 			printf("'%s' is not a number\n", argv[0]);
@@ -366,7 +368,11 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char *argv[])
 		return ret == 0 ? 1 : 0;
 
 	}
-
+	/*
+	 * Syntax is:
+	 *   0    1     2       3    4
+	 *   nand read  addr    off  size
+	 */
 	if (strncmp(cmd, "read", 4) == 0 || strncmp(cmd, "write", 5) == 0) {
 		int read;
 
@@ -377,7 +383,10 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char *argv[])
 
 		read = strncmp(cmd, "read", 4) == 0; /* 1 = read, 0 = write */
 		printf("\nNAND %s: ", read ? "read" : "write");
-		if (arg_off_size(argc - 3, argv + 3, nand, &off, &size) != 0)
+		/*
+         * 输入参数 个数：2 分别为： off size 
+         * */
+        if (arg_off_size(argc - 3, argv + 3, nand, &off, &size) != 0)
 			return 1;
 
 		s = strchr(cmd, '.');
