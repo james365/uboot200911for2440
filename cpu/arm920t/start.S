@@ -215,6 +215,17 @@ relocate:				/* relocate U-Boot to RAM	    */
 	cmp	r0, r1			/* don't reloc during debug         */
 	beq	stack_setup
 
+    mov r2, #0
+    str r2, [r2]
+    ldr r2, [r2]
+    cmp r2, #0
+
+    bne copy_to_ram_from_nor
+    mov sp, #0x1000
+    bl copy_to_ram_from_nand
+    b stack_setup
+
+copy_to_ram_from_nor:
 	ldr	r2, _armboot_start
 	ldr	r3, _bss_start
 	sub	r2, r3, r2		/* r2 <- size of armboot            */
@@ -288,13 +299,28 @@ cpu_init_crit:
 	 * find a lowlevel_init.S in your board directory.
 	 */
 	mov	ip, lr
-
+    bl  nand_asm_init 
 #ifndef CONFIG_SKIP_LOWLEVEL_INIT
 	bl	lowlevel_init
 #endif /* CONFIG_SKIP_LOWLEVEL_INIT */
 
 	mov	lr, ip
 	mov	pc, lr
+
+/* nand flash init */
+#define S3C2440_NAND_BASE   0x4e000000
+#define NFCONF_OFFSET   0x0 
+#define NFCONT_OFFSET   0x4
+
+nand_asm_init:
+    ldr r0, =S3C2440_NAND_BASE
+    ldr r1,=0x1210
+    str r1, [r0, #NFCONF_OFFSET]
+
+    mov r1, #0x3
+    str r1, [r0, #NFCONT_OFFSET]
+
+    mov pc, lr
 
 /*
  *************************************************************************
