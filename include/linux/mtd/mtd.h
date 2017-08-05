@@ -129,6 +129,9 @@ struct mtd_info {
 	 */
 	u_int32_t writesize;
 
+    u_char rw_oob; /* 0 只写主数据区 1 写数据区和OOB区数据*/
+    u_char skip_fb;/* !0 跳过第一个好的快，保存坏块表 */
+
 	u_int32_t oobsize;   /* Amount of OOB data per block (e.g. 16) */
 	u_int32_t oobavail;  /* Available OOB bytes per block */
 

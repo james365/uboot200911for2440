@@ -214,7 +214,7 @@ relocate:				/* relocate U-Boot to RAM	    */
 	ldr	r1, _TEXT_BASE		/* test if we run from flash or RAM */
 	cmp	r0, r1			/* don't reloc during debug         */
 	beq	stack_setup
-
+#ifndef CONFIG_UBOOT_DEBUG_INRAM
     mov r2, #0
     str r2, [r2]
     ldr r2, [r2]
@@ -224,7 +224,7 @@ relocate:				/* relocate U-Boot to RAM	    */
     mov sp, #0x1000
     bl copy_to_ram_from_nand
     b stack_setup
-
+#endif 
 copy_to_ram_from_nor:
 	ldr	r2, _armboot_start
 	ldr	r3, _bss_start

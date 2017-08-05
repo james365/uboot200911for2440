@@ -29,7 +29,9 @@
 #ifndef __CONFIG_H
 #define __CONFIG_H
 
-//#define  CONFIG_SKIP_LOWLEVEL_INIT 1
+#define  CONFIG_SKIP_LOWLEVEL_INIT 1
+#define CONFIG_UBOOT_DEBUG_INRAM 1
+
 
 /*
  * High Level Configuration Options
@@ -206,6 +208,11 @@
 
 /* NAND FLASH 配置 */
 #define CONFIG_CMD_NAND	1
+/* 支持 yaffs 烧写 */
+#define CONFIG_CMD_YAFFS 1
+/* 跳过第一个好nand块，保存坏块表 */
+#define CONFIG_YAFFS_SKIPFB 1 
+
 
 #define CONFIG_SYS_MAX_NAND_DEVICE	1
 #define CONFIG_SYS_NAND_BASE		0x4E000000 
