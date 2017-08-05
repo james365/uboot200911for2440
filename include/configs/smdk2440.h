@@ -29,7 +29,7 @@
 #ifndef __CONFIG_H
 #define __CONFIG_H
 
-#define  CONFIG_SKIP_LOWLEVEL_INIT 1
+//#define  CONFIG_SKIP_LOWLEVEL_INIT 1
 
 /*
  * High Level Configuration Options
@@ -109,11 +109,11 @@
 #define CONFIG_CMD_PING
 
 #define CONFIG_BOOTDELAY	3
-#define CONFIG_BOOTARGS	"root=/dev/nfs nfsroot=192.168.1.230:/nfs/rootfs ip=192.168.1.250 console=ttySAC0,115200"
+#define CONFIG_BOOTARGS	"root=/dev/nfs nfsroot=192.168.1.250:/nfs/rootfs ip=192.168.1.230 console=ttySAC0,115200"
 #define CONFIG_ETHADDR	08:00:3e:26:0a:5b 
 #define CONFIG_NETMASK          255.255.255.0
-#define CONFIG_IPADDR		192.168.1.250
-#define CONFIG_SERVERIP		192.168.1.230
+#define CONFIG_IPADDR		192.168.1.230
+#define CONFIG_SERVERIP		192.168.1.250
 /*#define CONFIG_BOOTFILE	"elinos-lart" */
 /*#define CONFIG_BOOTCOMMAND	"tftp; bootm" */
 
@@ -127,7 +127,7 @@
  * Miscellaneous configurable options
  */
 #define	CONFIG_SYS_LONGHELP				/* undef to save memory		*/
-#define	CONFIG_SYS_PROMPT		"SMDK2410 # "	/* Monitor Command Prompt	*/
+#define	CONFIG_SYS_PROMPT		"SMDK2440 #"	/* Monitor Command Prompt	*/
 #define	CONFIG_SYS_CBSIZE		256		/* Console I/O Buffer Size	*/
 #define	CONFIG_SYS_PBSIZE (CONFIG_SYS_CBSIZE+sizeof(CONFIG_SYS_PROMPT)+16) /* Print Buffer Size */
 #define	CONFIG_SYS_MAXARGS		16		/* max number of command args	*/
@@ -195,8 +195,11 @@
 #define CONFIG_SYS_FLASH_ERASE_TOUT	(5*CONFIG_SYS_HZ) /* Timeout for Flash Erase */
 #define CONFIG_SYS_FLASH_WRITE_TOUT	(5*CONFIG_SYS_HZ) /* Timeout for Flash Write */
 
-#define	CONFIG_ENV_IS_IN_FLASH	1
-#define CONFIG_ENV_SIZE		0x10000	/* Total Size of Environment Sector 64kb */
+//#define	CONFIG_ENV_IS_IN_FLASH	1
+//#define CONFIG_ENV_SIZE		0x10000	/* Total Size of Environment Sector 64kb */
+#define CONFIG_ENV_IS_IN_NAND 1 
+#define CONFIG_ENV_OFFSET 0x80000
+#define CONFIG_ENV_SIZE   0X80000  /* 512Kb */
 
 #define CONFIG_CMDLINE_EDITING
 #define CONFIG_AUTO_COMPLETE
@@ -207,6 +210,8 @@
 #define CONFIG_SYS_MAX_NAND_DEVICE	1
 #define CONFIG_SYS_NAND_BASE		0x4E000000 
 #define CONFIG_NAND_S3C2440 
+#define CONFIG_SYS_64BIT_VSPRINTF 
 
+#define CONFIG_UBOOT_SIZE   0x80000 
 
 #endif	/* __CONFIG_H */
