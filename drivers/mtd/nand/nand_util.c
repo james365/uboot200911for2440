@@ -485,8 +485,10 @@ int nand_write_skip_bad(nand_info_t *nand, loff_t offset, size_t *length,
         size_t oobsiz = nand->oobsize;
         size_t datsiz = nand->writesize;
         int pages;
-        if((*length)%(oobsiz + datsiz) != 0) {
-            printf("Attempt to write non page + oob(%d + %d) aligned datat\n");
+
+        if ((*length) % (oobsiz + datsiz) != 0) {
+            printf("Attempt to write non page + oob(%d + %d) aligned data\n",
+                   oobsiz, datsiz);
             *length = 0;
             return -EINVAL;
 

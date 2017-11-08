@@ -51,7 +51,7 @@
 /*
  * Size of malloc() pool
  */
-#define CONFIG_SYS_MALLOC_LEN		(CONFIG_ENV_SIZE + 128*1024)  /* 64+128=192kb */ 
+#define CONFIG_SYS_MALLOC_LEN		(CONFIG_ENV_SIZE + 1024*1024)  /* 64+128=192kb */ 
 #define CONFIG_SYS_GBL_DATA_SIZE	128	/* size in bytes reserved for initial data */
 
 /*
@@ -220,5 +220,22 @@
 #define CONFIG_SYS_64BIT_VSPRINTF 
 
 #define CONFIG_UBOOT_SIZE   0x80000 
+
+/* UBI 相关命令支持 */
+#define CONFIG_CMD_MTDPARTS         /* MTD分区命令支持 */
+#define CONFIG_CMD_UBI              /* UBI命令支持 */
+#define CONFIG_CMD_UBIFS            /* UBIFS命令支持 */
+
+#define CONFIG_MTD_DEVICE           /* MTD设备支持 */
+#define CONFIG_MTD_PARTITIONS       /* MTD分区支持 */
+#define CONFIG_LZO                  /* LZO压缩 */
+#define CONFIG_RBTREE               /* 红黑树 */
+
+#define MTDIDS_DEFAULT      "nand0=NAND"
+#define MTDPARTS_DEFAULT    "mtdparts=NAND:512k(uboot),"\
+                              "512k(param),"\
+                              "5m(kernel),"\
+                              "-(rootfs)"
+
 
 #endif	/* __CONFIG_H */
